@@ -1,21 +1,12 @@
-# Gradle
 .gradle/
 build/
-
-# IDEs
+out/
 .idea/
 *.iml
 .classpath
 .project
 .settings/
 .vscode/
-
-# Local runtime
-run/
-server/
-logs/
-plugins/
-
-# OS
+*.log
 .DS_Store
 Thumbs.db
