@@ -1,0 +1,25 @@
+name: Headroom
+version: '${version}'
+main: dev.headroom.HeadroomPlugin
+api-version: '1.21'
+load: POSTWORLD
+authors:
+  - Limme
+description: Quality-constrained, adaptive chunk horizon scheduling for Paper.
+website: https://github.com/Limme-swe/servoptm
+softdepend:
+  - Geyser-Spigot
+  - floodgate
+
+commands:
+  headroom:
+    description: Inspect and control Headroom.
+    usage: /headroom <status|pause|resume|reload>
+    permission: headroom.admin
+    aliases:
+      - hr
+
+permissions:
+  headroom.admin:
+    description: Allows administration of Headroom.
+    default: op
