@@ -1,0 +1,62 @@
+# Headroom deliberately expands view distance one complete Paper-visible ring at a time.
+# It never substitutes lower-detail terrain and never sends custom chunk packets.
+
+schema-version: 1
+enabled: true
+
+horizon:
+  # Paper's supported per-player send distance is 2..32.
+  max-java-distance: 24
+  max-bedrock-distance: 16
+
+  # Keep false for normal survival servers. A missing chunk blocks expansion at that ring
+  # instead of forcing terrain generation while a player is moving.
+  generate-new-chunks: false
+
+  # A promoted ring is rolled back when Paper has not confirmed every expected chunk
+  # delivery within this period.
+  delivery-timeout-ticks: 240
+
+  # Delay before retrying a ring blocked by unavailable terrain or a transient failure.
+  retry-delay-ticks: 100
+
+scheduler:
+  # Maximum unique chunk load operations started in one tick.
+  max-load-starts-per-tick: 4
+
+  # Global cap for asynchronous Paper chunk requests.
+  max-in-flight-loads: 16
+
+  # Headroom stops starting work after this much tick-end wall time.
+  main-thread-budget-micros: 1500
+
+  # Fair-share credits added to each active player every tick.
+  player-quantum: 1.0
+
+warm-leases:
+  # Prepared chunks are held only until Paper confirms delivery or the plan is cancelled.
+  max-chunks: 768
+  timeout-ticks: 300
+
+load-control:
+  sample-window-ticks: 200
+  soft-p95-ms: 42.0
+  hard-p95-ms: 48.0
+  critical-tick-ms: 55.0
+
+  # Hysteresis prevents view-distance oscillation.
+  unhealthy-ticks-to-retract: 8
+  healthy-ticks-to-expand: 120
+  distance-change-cooldown-ticks: 100
+
+  # The adaptive ceiling can retract by at most this many chunks.
+  max-distance-penalty: 12
+
+geyser:
+  # Standard Paper chunk delivery is retained, so Geyser remains in the packet path.
+  detect-bedrock-players: true
+  log-detection-failures: true
+
+worlds:
+  disabled: []
+  max-distance-overrides: {}
