@@ -1,0 +1,43 @@
+name: Headroom
+version: '${version}'
+main: io.github.limmeswe.headroom.HeadroomPlugin
+api-version: '${pluginApiVersion}'
+description: Quality-constrained, globally scheduled chunk delivery for Paper servers.
+author: Limme-swe
+website: https://github.com/Limme-swe/servoptm
+load: POSTWORLD
+folia-supported: false
+softdepend:
+  - Geyser-Spigot
+  - floodgate
+  - ViaVersion
+commands:
+  headroom:
+    description: Inspect and administer Headroom.
+    usage: /headroom [status|player|reload|pause|resume|help]
+    aliases: [hr]
+permissions:
+  headroom.command.status:
+    description: View Headroom runtime status.
+    default: op
+  headroom.command.player:
+    description: Inspect a player's horizon state.
+    default: op
+  headroom.command.reload:
+    description: Reload Headroom configuration.
+    default: op
+  headroom.command.pause:
+    description: Pause Headroom without unloading the plugin.
+    default: op
+  headroom.command.resume:
+    description: Resume Headroom after it has been paused.
+    default: op
+  headroom.command.*:
+    description: Grants all Headroom administration permissions.
+    default: op
+    children:
+      headroom.command.status: true
+      headroom.command.player: true
+      headroom.command.reload: true
+      headroom.command.pause: true
+      headroom.command.resume: true

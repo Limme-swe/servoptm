@@ -1,0 +1,70 @@
+# Headroom raises a player's visual send distance only after every chunk in the
+# exact next Paper view boundary is resident. It never substitutes fake blocks,
+# lowers block detail, or contracts below the player's pre-Headroom baseline.
+enabled: true
+
+# Rebuild the global demand graph every N ticks.
+scheduler-period-ticks: 2
+
+worlds:
+  # World names are matched case-insensitively.
+  disabled: []
+
+distances:
+  maximum-send-distance: 24
+
+  # Standard Paper packets are used for every client. This separate ceiling is
+  # a conservative bandwidth limit for players identified by Geyser/Floodgate.
+  bedrock-maximum-send-distance: 16
+
+  expansion-cooldown-seconds: 3
+  contraction-cooldown-seconds: 2
+  respect-client-view-distance: true
+
+  # -1 preserves the existing simulation distance. Setting 2..32 changes
+  # gameplay simulation and is intentionally opt-in.
+  simulation-distance-cap: -1
+
+planner:
+  speculative-rings: 4
+  maximum-speculative-candidates-per-player: 64
+  minimum-speculation-speed: 1.5
+  minimum-directional-alignment: 0.15
+  reachability-horizon-seconds: 3.0
+  minimum-commit-deadline-seconds: 0.35
+  maximum-commit-deadline-seconds: 6.0
+
+scheduler:
+  maximum-concurrent-loads: 8
+
+  # Hard cap for Headroom-owned plugin tickets. Guaranteed boundary work can
+  # evict speculative leases, but never another guaranteed boundary lease.
+  maximum-warm-chunks: 768
+  warm-lease-seconds: 8
+  handoff-grace-ticks: 40
+
+  maximum-loads-per-second: 40.0
+  maximum-selections-per-cycle: 12
+
+  # False prevents unexplored terrain from being generated merely for view
+  # distance. Existing generated terrain is still prepared asynchronously.
+  generate-new-chunks: false
+  urgent-commit-loads: false
+  load-timeout-seconds: 12
+  failure-retry-seconds: 2
+
+  fairness-quantum: 2.0
+  fairness-maximum-credit: 8.0
+
+controller:
+  window-ticks: 400
+  minimum-samples: 100
+  evaluation-period-ticks: 20
+  target-p95-mspt: 38.0
+  target-p99-mspt: 48.0
+  hard-p99-mspt: 55.0
+  recovery-windows: 5
+  critical-windows: 2
+
+diagnostics:
+  log-controller-transitions: true
